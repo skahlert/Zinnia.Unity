@@ -16,6 +16,13 @@
         [field: DocumentedByXml]
         public float MaximumLength { get; set; } = 100f;
 
+        /// <summary>
+        /// Layers to ignore
+        /// </summary>
+        [Serialized]
+        [field: DocumentedByXml]
+        public LayerMask LayersToIgnore { get; set; } = Physics.IgnoreRaycastLayer;
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -45,7 +52,7 @@
             Vector3 originForward = Origin.transform.forward;
 
             Ray ray = new Ray(originPosition, originForward);
-            bool hasCollided = PhysicsCast.Raycast(PhysicsCast, ray, out RaycastHit hitData, MaximumLength, Physics.IgnoreRaycastLayer);
+            bool hasCollided = PhysicsCast.Raycast(PhysicsCast, ray, out RaycastHit hitData, MaximumLength, LayersToIgnore);
             TargetHit = hasCollided ? hitData : (RaycastHit?)null;
 
             Vector3 destinationPosition = hasCollided ? hitData.point : originPosition + originForward * MaximumLength;
